@@ -1,7 +1,7 @@
 {
-  "name": "react-es6-starter-kit",
+  "name": "workout-timer",
   "version": "0.0.1",
-  "description": "A simple starter kit for your React project.",
+  "description": "Simple workout timer for keeping track of your reps and isometric holds.",
   "author": "Sandor Kocsis <kocsissandor85@gmail.com>",
 
   "scripts": {
@@ -13,7 +13,7 @@
 
   "repository": {
     "type": "git",
-    "url": "https://github.com/kocsissandor85/react-es6-starter-kit.git"
+    "url": "https://github.com/kocsissandor85/workout-timer.git"
   },
 
   "keywords": [
@@ -23,29 +23,29 @@
   ],
 
   "dependencies": {
-    "babel-preset-es2015": "6.6.0",
+    "babel-preset-es2015": "6.9.0",
     "babel-preset-react": "6.5.0",
-    "babelify": "^7.2.0",
-    "browserify": "^13.0.0",
+    "babelify": "^7.3.0",
+    "browserify": "^13.0.1",
     "domready": "^1.0.8",
     "gulp": "^3.9.1",
-    "gulp-sass": "^2.2.0",
+    "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-uglify": "^1.5.3",
     "gulp-util": "^3.0.7",
-    "gulp-watch": "^4.3.1",
+    "gulp-watch": "^4.3.6",
     "gulp-webserver": "^0.9.1",
     "immstruct": "^2.0.0",
-    "immutable": "^3.7.6",
-    "lodash": "^4.6.0",
+    "immutable": "^3.8.1",
+    "lodash": "^4.13.1",
     "omniscient": "^4.1.1",
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "react-router": "^2.0.0",
-    "reflux": "^0.3.0",
+    "react": "^15.1.0",
+    "react-dom": "^15.1.0",
+    "react-router": "^2.4.1",
+    "reflux": "^0.4.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
-    "watchify": "^3.0.7",
+    "watchify": "^3.7.0",
     "when": "^3.7.7"
   },
 

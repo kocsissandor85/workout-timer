@@ -1,6 +1,6 @@
-# react-es6-starter-kit
+# workout-timer
 
-A simple starter kit for your React project.
+Simple workout timer for keeping track of your reps and isometric holds.
 
 ### Gulp commands
 
