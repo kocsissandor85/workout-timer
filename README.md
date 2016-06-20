@@ -4,7 +4,7 @@ Simple workout timer for keeping track of your reps and isometric holds.
 
 ### Gulp commands
 
-Run the development server on port 8000:
+Run the development server on port 8008:
 
 ```sh
 $ gulp runserver
