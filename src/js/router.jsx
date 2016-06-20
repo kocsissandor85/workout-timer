@@ -5,14 +5,18 @@ import when from "when";
 import {browserHistory, Router, Route, IndexRoute} from "react-router";
 
 import App from "./app";
-import Page from "./components/page";
+import IndexPage from "./components/pages/index";
+import WorkoutPage from "./components/pages/workout";
+import StatsPage from "./components/pages/stats";
 import Store from "./stores/store";
 
 var routes, Handler;
 
 routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={Page} />
+    <IndexRoute component={IndexPage} />
+    <Route path="/workout" component={WorkoutPage} />
+    <Route path="/stats" component={StatsPage} />
   </Route>
 );
 

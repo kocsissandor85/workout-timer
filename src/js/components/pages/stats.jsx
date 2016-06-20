@@ -1,10 +1,10 @@
 import React from "react";
 
-import TopDownRenderingMixin from "../mixins/top-down-rendering";
+import TopDownRenderingMixin from "../../mixins/top-down-rendering";
 
 export default React.createClass({
 
-  displayName: "Page",
+  displayName: "Stats Page",
   mixins: [TopDownRenderingMixin],
 
   propTypes: {

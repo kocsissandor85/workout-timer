@@ -5,7 +5,8 @@ import Actions from "../actions";
 export default Reflux.createStore({
 
   data: immstruct({
-    /* Add some immutable data for top-down rendering. */
+    restingTimeInSeconds: 975,
+    workoutState: "Work"
   }),
 
   init: function () {

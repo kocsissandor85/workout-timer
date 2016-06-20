@@ -38,7 +38,7 @@ bundler = watchify(browserify(options));
 // Add transformations here.
 bundler.transform(babelify);
 
-gulp.task("watch", ["css", "html"], function() {
+gulp.task("watch", ["fonts", "css", "html"], function() {
   bundle();
 
   gulp.watch("./src/styles/**/*.scss", ["css"]);
@@ -47,6 +47,7 @@ gulp.task("watch", ["css", "html"], function() {
 
 gulp.task("css", css);
 gulp.task("html", html);
+gulp.task("fonts", fonts);
 gulp.task("runserver", runserver);
 
 bundler.on("update", bundle);
@@ -56,6 +57,8 @@ function runserver () {
   gulp.src("./dist")
       .pipe(webserver({
         fallback: "index.html",
+        host: "0.0.0.0",
+        port: 8008,
         livereload: true
       }));
 }
@@ -64,6 +67,12 @@ function html () {
   return gulp.src("./src/html/**/*.html")
     .on("log", gutil.log)
     .pipe(gulp.dest("./dist"));
+}
+
+function fonts () {
+  return gulp.src("./src/fonts/**/*.*")
+    .on("log", gutil.log)
+    .pipe(gulp.dest("./dist/fonts"));
 }
 
 function css () {
