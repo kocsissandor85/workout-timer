@@ -69,6 +69,7 @@ export default withRouter(React.createClass({
   onFinishWorkout: function () {
     this.timer.clear();
     Actions.workout.finish();
+    this.props.router.push("/stats");
   },
 
   onContinueWorkout: function () {

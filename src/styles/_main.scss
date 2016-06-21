@@ -48,7 +48,7 @@ $palette_no3: (
 }
 
 @function color($key) {
-  @return get-map($palette_no2, $key);
+  @return get-map($palette_no1, $key);
 }
 
 /* Fonts */

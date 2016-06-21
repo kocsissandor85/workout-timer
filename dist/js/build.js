@@ -57717,41 +57717,73 @@ var _react = require("react");
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactHammerjs = require("react-hammerjs");
+
+var _reactHammerjs2 = _interopRequireDefault(_reactHammerjs);
+
+var _reactRouter = require("react-router");
+
+var _accurateInterval = require("accurate-interval");
+
+var _accurateInterval2 = _interopRequireDefault(_accurateInterval);
+
+var _store = require("../../stores/store");
+
+var _actions = require("../../actions");
+
+var _actions2 = _interopRequireDefault(_actions);
+
 var _topDownRendering = require("../../mixins/top-down-rendering");
 
 var _topDownRendering2 = _interopRequireDefault(_topDownRendering);
 
+var _title = require("../ui/title");
+
+var _title2 = _interopRequireDefault(_title);
+
+var _lcd = require("../ui/lcd");
+
+var _lcd2 = _interopRequireDefault(_lcd);
+
+var _button = require("../ui/button");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-exports.default = _react2.default.createClass({
+exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
 
-  displayName: "Stats Page",
+  displayName: "Workout Page",
   mixins: [_topDownRendering2.default],
 
   propTypes: {
     data: _react2.default.PropTypes.object
   },
 
+  onRestartWorkout: function onRestartWorkout() {
+    this.props.router.push("/");
+  },
+
   render: function render() {
     return _react2.default.createElement(
-      "div",
-      null,
+      "section",
+      { className: "container" },
+      _react2.default.createElement(_title2.default, { title: "Workout finished",
+        description: "You can check out your total workout time above." }),
       _react2.default.createElement(
-        "h1",
-        null,
-        "React-es6-starter-kit"
+        "div",
+        { className: "content" },
+        _react2.default.createElement(_lcd2.default, { allowHours: true, seconds: this.props.data.get("totalWorkoutTime") })
       ),
       _react2.default.createElement(
-        "p",
-        null,
-        "A simple starter kit for your React project."
+        "footer",
+        { className: "footer" },
+        _react2.default.createElement(_button.ActionButton, { type: "restart", onTap: this.onRestartWorkout })
       )
     );
   }
 
-});
+}));
 
-},{"../../mixins/top-down-rendering":320,"react":274}],316:[function(require,module,exports){
+},{"../../actions":312,"../../mixins/top-down-rendering":320,"../../stores/store":322,"../ui/button":317,"../ui/lcd":318,"../ui/title":319,"accurate-interval":2,"react":274,"react-hammerjs":48,"react-router":78}],316:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -57853,6 +57885,7 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
   onFinishWorkout: function onFinishWorkout() {
     this.timer.clear();
     _actions2.default.workout.finish();
+    this.props.router.push("/stats");
   },
 
   onContinueWorkout: function onContinueWorkout() {
@@ -57961,7 +57994,7 @@ var ActionButton = exports.ActionButton = _react2.default.createClass({
 
   propTypes: {
     onTap: _react2.default.PropTypes.func.isRequired,
-    type: _react2.default.PropTypes.oneOf(["play", "pause", "continue", "stop"]).isRequired
+    type: _react2.default.PropTypes.oneOf(["play", "pause", "continue", "stop", "restart"]).isRequired
   },
 
   getHumanReadable: function getHumanReadable() {
@@ -57969,7 +58002,8 @@ var ActionButton = exports.ActionButton = _react2.default.createClass({
       play: "Start workout",
       continue: "Continue",
       pause: "Pause workout",
-      stop: "Finish workout"
+      stop: "Finish workout",
+      restart: "Start new workout"
     };
 
     return map[this.props.type];
@@ -58015,7 +58049,14 @@ exports.default = _react2.default.createClass({
   displayName: "LCD Display",
 
   propTypes: {
-    seconds: _react2.default.PropTypes.number
+    seconds: _react2.default.PropTypes.number,
+    allowHours: _react2.default.PropTypes.bool
+  },
+
+  getDefaultProps: function getDefaultProps() {
+    return {
+      allowHours: false
+    };
   },
 
   getInitialState: function getInitialState() {
@@ -58084,8 +58125,22 @@ exports.default = _react2.default.createClass({
     return result;
   },
 
+  getHours: function getHours() {
+    var h = Math.floor(this.props.seconds / (60 * 60));
+
+    return h < 10 ? "0" + h : h;
+  },
+
   getMinutes: function getMinutes() {
-    var m = Math.floor(this.props.seconds / 60);
+    var s, m;
+
+    if (this.props.allowHours) {
+      s = this.props.seconds % (60 * 60);
+    } else {
+      s = this.props.seconds;
+    }
+
+    m = Math.floor(s / 60);
 
     return m < 10 ? "0" + m : m;
   },
@@ -58094,6 +58149,18 @@ exports.default = _react2.default.createClass({
     var s = this.props.seconds % 60;
 
     return s < 10 ? "0" + s : s;
+  },
+
+  getContent: function getContent() {
+    var hours, minutes, seconds, addHours;
+
+    hours = this.getHours();
+    minutes = this.getMinutes();
+    seconds = this.getSeconds();
+
+    addHours = parseInt(hours, 10) && this.props.allowHours;
+
+    return "" + (addHours ? hours + ":" : "") + minutes + ":" + seconds;
   },
 
   render: function render() {
@@ -58107,9 +58174,7 @@ exports.default = _react2.default.createClass({
       _react2.default.createElement(
         "span",
         null,
-        this.getMinutes(),
-        ":",
-        this.getSeconds()
+        this.getContent()
       ),
       _react2.default.createElement("span", { className: "baseliner", style: this.state })
     );

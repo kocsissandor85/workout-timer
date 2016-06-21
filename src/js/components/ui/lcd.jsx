@@ -7,7 +7,14 @@ export default React.createClass({
   displayName: "LCD Display",
 
   propTypes: {
-    seconds: React.PropTypes.number
+    seconds: React.PropTypes.number,
+    allowHours: React.PropTypes.bool
+  },
+
+  getDefaultProps: function () {
+    return {
+      allowHours: false
+    };
   },
 
   getInitialState: function () {
@@ -77,8 +84,22 @@ export default React.createClass({
     return result;
   },
 
+  getHours: function () {
+    var h = Math.floor(this.props.seconds / (60 * 60));
+
+    return h < 10 ? `0${h}` : h;
+  },
+
   getMinutes: function () {
-    var m = Math.floor(this.props.seconds / 60);
+    var s, m;
+
+    if (this.props.allowHours) {
+      s = this.props.seconds % (60 * 60);
+    } else {
+      s = this.props.seconds;
+    }
+
+    m = Math.floor(s / 60);
 
     return m < 10 ? `0${m}` : m;
   },
@@ -89,6 +110,19 @@ export default React.createClass({
     return s < 10 ? `0${s}` : s;
   },
 
+  getContent: function () {
+    var hours, minutes,
+        seconds, addHours;
+
+    hours = this.getHours();
+    minutes = this.getMinutes();
+    seconds = this.getSeconds();
+
+    addHours = parseInt(hours, 10) && this.props.allowHours;
+
+    return `${addHours ? (hours + ":") : ""}${minutes}:${seconds}`;
+  },
+
   render: function () {
     var style = {
       fontSize: this.state.height
@@ -96,7 +130,7 @@ export default React.createClass({
 
     return (
       <div style={style} className="lcd">
-        <span>{this.getMinutes()}:{this.getSeconds()}</span>
+        <span>{this.getContent()}</span>
         <span className="baseliner" style={this.state}></span>
       </div>
     );
