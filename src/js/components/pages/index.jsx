@@ -1,4 +1,5 @@
 import React from "react";
+import {withRouter} from "react-router";
 import Hammer from "react-hammerjs";
 import _ from "lodash";
 
@@ -8,7 +9,10 @@ import TitleBar from "../ui/title";
 import LCD from "../ui/lcd";
 import {ActionButton} from "../ui/button";
 
-export default React.createClass({
+const ADJUSTMENT_THRESHOLD = 200;
+const ALLOWED_DIRECTIONS = [2, 4];
+
+export default withRouter(React.createClass({
 
   displayName: "Index Page",
   mixins: [TopDownRenderingMixin],
@@ -20,16 +24,17 @@ export default React.createClass({
   },
 
   adjustRestingTime: function (evt) {
-    var leftRight, threshold;
+    var leftRight, step, distanceByVelocity;
 
-    if ([2, 4].indexOf(evt.direction) > -1) {
-      leftRight = evt.direction - 3;
-      threshold = 500;
+    if (ALLOWED_DIRECTIONS.indexOf(evt.direction) > -1) {
+      distanceByVelocity = Math.round(Math.abs(evt.distance * evt.velocityX));
+      this.panAdjustmentBuffer += distanceByVelocity;
 
-      this.panAdjustmentBuffer += Math.round(Math.abs(evt.distance * evt.velocityX));
+      if (this.panAdjustmentBuffer > ADJUSTMENT_THRESHOLD) {
+        leftRight = evt.direction - 3;
+        step = 1;
 
-      if (this.panAdjustmentBuffer > threshold) {
-        Actions.timer.adjust(leftRight, 1);
+        Actions.timer.adjust(leftRight, step);
         this.panAdjustmentBuffer = 0;
       }
     }
@@ -46,20 +51,24 @@ export default React.createClass({
     };
   },
 
+  onStartWorkout: function () {
+    this.props.router.push("/workout");
+  },
+
   render: function () {
     return (
       <section className="container">
-        <TitleBar description="Set your resting time. Swipe left or right to adjust it." />
+        <TitleBar title="Set your resting time" description="Swipe left or right to adjust it." />
         <Hammer options={this.getHammerOptions()} onPan={this.adjustRestingTime}>
           <div className="content">
-            <LCD seconds={this.props.data.get("restingTimeInSeconds")}/>
+            <LCD seconds={this.props.data.get("restingTime")}/>
           </div>
         </Hammer>
         <footer className="footer">
-          <ActionButton type="play" onTap={Actions.workout.start}/>
+          <ActionButton type="play" onTap={this.onStartWorkout}/>
         </footer>
       </section>
     );
   }
 
-});
+}));

@@ -23,6 +23,7 @@
   ],
 
   "dependencies": {
+    "accurate-interval": "^1.0.9",
     "babel-preset-es2015": "6.9.0",
     "babel-preset-react": "6.5.0",
     "babelify": "^7.3.0",

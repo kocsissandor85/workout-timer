@@ -902,7 +902,8 @@ textarea {
 .ti-control-shuffle:before {
   content: "\e6ac"; }
 
-.ti-control-play:before {
+.ti-control-play:before,
+.ti-control-continue:before {
   content: "\e6ad"; }
 
 .ti-control-pause:before {
@@ -1439,7 +1440,8 @@ textarea {
 .ti-rss-alt:before {
   content: "\e75f"; }
 
-/* Some vars and functions, whatever we need. */
+/* Palettes */
+/* Functions */
 /* Fonts */
 @font-face {
   font-family: "Digital 7 Mono";
@@ -1452,8 +1454,8 @@ html {
   height: 100%; }
 
 body {
-  background-color: #282634;
-  color: #DE7571;
+  background-color: #000E2E;
+  color: #C2C8D1;
   font-family: "Lato", Arial, Helvetica, sans-serif;
   height: 100%;
   user-select: none;
@@ -1462,7 +1464,7 @@ body {
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-touch-callout: none;
-  -webkit-tap-highlight-color: rgba(222, 117, 113, 0.3); }
+  -webkit-tap-highlight-color: rgba(0, 185, 210, 0.3); }
   body * {
     box-sizing: border-box; }
 
@@ -1470,11 +1472,16 @@ h1, h2, h3 {
   font-weight: normal;
   margin: 0; }
 
+h1 {
+  font-size: 1.5em; }
+  h1 + h2 {
+    font-size: 1em; }
+
 p {
   margin: 0; }
 
 a:link, a:hover, a:visited {
-  color: #DE7571; }
+  color: #C2C8D1; }
 
 /* Layout */
 #main, .app, .page-content, .container {
@@ -1492,7 +1499,7 @@ a:link, a:hover, a:visited {
   justify-content: center;
   flex: 2;
   flex-direction: column;
-  border-bottom: 1px solid #55516f; }
+  border-bottom: 1px solid #025185; }
   .title-bar h1, .title-bar h2 {
     align-self: center;
     text-align: center; }
@@ -1514,7 +1521,8 @@ a:link, a:hover, a:visited {
 
 /* LCD */
 .lcd {
-  color: #BD928B;
+  color: #00B9D2;
+  cursor: pointer;
   font-family: "Digital 7 Mono";
   line-height: 130%;
   padding: 0; }
@@ -1524,8 +1532,9 @@ a:link, a:hover, a:visited {
 /* Buttons */
 .button {
   align-items: center;
-  border-top: 1px solid #55516f;
-  border-left: 1px solid #55516f;
+  border-top: 1px solid #025185;
+  border-left: 1px solid #025185;
+  cursor: pointer;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -1533,15 +1542,15 @@ a:link, a:hover, a:visited {
   justify-content: center;
   text-decoration: none; }
   .button [class^="ti-"], .button [class*=" ti-"] {
-    color: #DE7571; }
+    color: #F4FFF9; }
   .button:first-child {
     border-left: 0 none; }
   .button.play {
-    color: #DE7571; }
+    color: #C2C8D1; }
   .button.pause {
-    color: #DE7571; }
+    color: #C2C8D1; }
   .button.stop {
-    color: #DE7571; }
+    color: #C2C8D1; }
 
 [class^="ti-"], [class*=" ti-"] {
   font-size: 0.75em; }

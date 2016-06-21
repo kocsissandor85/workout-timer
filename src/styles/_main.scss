@@ -1,6 +1,6 @@
-/* Some vars and functions, whatever we need. */
+/* Palettes */
 
-$colors: (
+$palette_no1: (
     "bg": #282634,
     "border": lighten(#282634, 20),
     "text": #DE7571,
@@ -10,7 +10,33 @@ $colors: (
     "pause": #DE7571,
     "stop": #DE7571,
     "tap-highlight": transparentize(#DE7571, 0.7)
-) !global;
+);
+
+$palette_no2: (
+    "bg": #000E2E,
+    "border": #025185,
+    "text": #C2C8D1,
+    "lcd": #00B9D2,
+    "icon": #F4FFF9,
+    "play": #C2C8D1,
+    "pause": #C2C8D1,
+    "stop": #C2C8D1,
+    "tap-highlight": transparentize(#00B9D2, 0.7)
+);
+
+$palette_no3: (
+    "bg": #130912,
+    "border": #3E1C33,
+    "text": #B14623,
+    "lcd": #F6921D,
+    "icon": #B14623,
+    "play": #B14623,
+    "pause": #B14623,
+    "stop": #B14623,
+    "tap-highlight": transparentize(#3E1C33, 0.7)
+);
+
+/* Functions */
 
 @function get-map($map, $key) {
   @if (map-has-key($map, $key)) {
@@ -22,7 +48,7 @@ $colors: (
 }
 
 @function color($key) {
-  @return get-map($colors, $key);
+  @return get-map($palette_no2, $key);
 }
 
 /* Fonts */
@@ -63,6 +89,14 @@ body {
 h1, h2, h3 {
   font-weight: normal;
   margin: 0;
+}
+
+h1 {
+  font-size: 1.5em;
+
+  & + h2 {
+    font-size: 1em;
+  }
 }
 
 p {
@@ -122,6 +156,7 @@ a:link, a:hover, a:visited {
 
 .lcd {
   color: color("lcd");
+  cursor: pointer;
   font-family: "Digital 7 Mono";
   line-height: 130%;
   padding: 0;
@@ -137,6 +172,7 @@ a:link, a:hover, a:visited {
   align-items: center;
   border-top: 1px solid color("border");
   border-left: 1px solid color("border");
+  cursor: pointer;
   display: flex;
   flex: 1;
   flex-direction: column;

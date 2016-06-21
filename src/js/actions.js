@@ -7,13 +7,15 @@ asyncAction = { asyncResult: true };
 
 export default {
   workout: Reflux.createActions({
-    "start": syncAction,
-    "pause": syncAction,
-    "continue": syncAction,
-    "finish": syncAction
+    rest: syncAction,
+    restEnd: syncAction,
+    pause: syncAction,
+    continue: syncAction,
+    finish: syncAction
   }),
 
   timer: Reflux.createActions({
-    adjust: syncAction
+    adjust: syncAction,
+    update: syncAction
   })
 };

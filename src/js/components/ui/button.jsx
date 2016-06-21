@@ -36,15 +36,15 @@ export var ActionButton = React.createClass({
 
   propTypes: {
     onTap: React.PropTypes.func.isRequired,
-    type: React.PropTypes.oneOf(["play", "pause", "stop"]).isRequired
+    type: React.PropTypes.oneOf(["play", "pause", "continue", "stop"]).isRequired
   },
 
   getHumanReadable: function () {
     var map = {
-      "play": "Start workout",
-      "continue": "Continue workout",
-      "pause": "Pause workout",
-      "stop": "Finish workout"
+      play: "Start workout",
+      continue: "Continue",
+      pause: "Pause workout",
+      stop: "Finish workout"
     };
 
     return map[this.props.type];

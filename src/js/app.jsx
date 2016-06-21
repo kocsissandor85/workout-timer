@@ -1,5 +1,4 @@
 import React from "react";
-import {Link} from "react-router";
 import Hammer from "react-hammerjs";
 
 import Store from "./stores/store";

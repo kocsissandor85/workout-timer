@@ -38,16 +38,19 @@ bundler = watchify(browserify(options));
 // Add transformations here.
 bundler.transform(babelify);
 
-gulp.task("watch", ["fonts", "css", "html"], function() {
+gulp.task("watch", ["fonts", "css", "html", "sfx"], function() {
   bundle();
 
   gulp.watch("./src/styles/**/*.scss", ["css"]);
+  gulp.watch("./src/fonts/**/*.*", ["fonts"]);
+  gulp.watch("./src/sfx/**/*.*", ["sfx"]);
   gulp.watch("./src/html/**/*.html", ["html"]);
 });
 
 gulp.task("css", css);
 gulp.task("html", html);
 gulp.task("fonts", fonts);
+gulp.task("sfx", sfx);
 gulp.task("runserver", runserver);
 
 bundler.on("update", bundle);
@@ -73,6 +76,12 @@ function fonts () {
   return gulp.src("./src/fonts/**/*.*")
     .on("log", gutil.log)
     .pipe(gulp.dest("./dist/fonts"));
+}
+
+function sfx () {
+  return gulp.src("./src/sfx/**/*.*")
+    .on("log", gutil.log)
+    .pipe(gulp.dest("./dist/sfx"));
 }
 
 function css () {
