@@ -17,25 +17,25 @@ export default withRouter(React.createClass({
   displayName: "Index Page",
   mixins: [TopDownRenderingMixin],
 
-  panAdjustmentBuffer: 0,
+  adjustmentLoadState: 0,
 
   propTypes: {
     data: React.PropTypes.object
   },
 
   adjustRestingTime: function (evt) {
-    var leftRight, step, distanceByVelocity;
+    var direction, distanceByVelocity;
 
     if (ALLOWED_DIRECTIONS.indexOf(evt.direction) > -1) {
       distanceByVelocity = Math.round(Math.abs(evt.distance * evt.velocityX));
-      this.panAdjustmentBuffer += distanceByVelocity;
+      this.adjustmentLoadState += distanceByVelocity;
 
-      if (this.panAdjustmentBuffer > ADJUSTMENT_THRESHOLD) {
-        leftRight = evt.direction - 3;
-        step = 1;
+      if (this.adjustmentLoadState > ADJUSTMENT_THRESHOLD) {
+        // Directions 2 and 4 allowed. Extracting 3 gives us a direction, yay!
+        direction = evt.direction - 3;
 
-        Actions.timer.adjust(leftRight, step);
-        this.panAdjustmentBuffer = 0;
+        Actions.timer.adjust(direction);
+        this.adjustmentLoadState = 0;
       }
     }
   },

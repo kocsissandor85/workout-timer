@@ -2,7 +2,6 @@ import Reflux from "reflux";
 import _ from "lodash";
 import immstruct from "immstruct";
 import Actions from "../actions";
-import SFX from "../audio";
 
 const DEFAULT_RESTING_TIME = 90;
 const DEFAULT_REMAINING_TIME = 10;
@@ -43,12 +42,6 @@ export default Reflux.createStore({
 
     this.listenTo(Actions.timer.adjust, this.adjustTimer);
     this.listenTo(Actions.timer.update, this.updateTimer);
-
-    document.addEventListener("deviceready", this.onDeviceReady, false);
-  },
-
-  onDeviceReady: function () {
-    
   },
 
   handleAction: function (action) {
@@ -103,7 +96,7 @@ export default Reflux.createStore({
     }
   },
 
-  adjustTimer: function (direction, step) {
+  adjustTimer: function (direction, step = 1) {
     var currentRestingTime, newRestingTime;
 
     currentRestingTime = this.data.cursor("restingTime");
@@ -131,10 +124,6 @@ export default Reflux.createStore({
       } else {
         d.set(converted.activeKey, current + converted.increment);
       }
-
-      SFX.beep.volume = goingDown && current <= 5 ? 1 : 0;
-      SFX.beep.play();
-      SFX.wooden.play();
 
       d.set("totalWorkoutTime", converted.totalWorkoutTime + 1);
     }));

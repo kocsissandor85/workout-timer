@@ -9,6 +9,7 @@ import TopDownRenderingMixin from "../../mixins/top-down-rendering";
 import TitleBar from "../ui/title";
 import LCD from "../ui/lcd";
 import {ActionButton} from "../ui/button";
+import SFX from "../../audio";
 
 export default withRouter(React.createClass({
 
@@ -37,7 +38,17 @@ export default withRouter(React.createClass({
   },
 
   tick: function () {
+    var current, goingDown;
+
+    current = this.getLCDSeconds();
+    goingDown = [WORKOUT_STATES.rest, WORKOUT_STATES.start]
+        .indexOf(this.props.data.get("workoutState")) > -1;
+
     Actions.timer.update();
+
+    SFX.beep.volume = goingDown && current <= 5 ? 1 : 0;
+    SFX.beep.play();
+    SFX.wooden.play();
   },
 
   getTitleDescription: function () {

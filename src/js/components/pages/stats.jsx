@@ -27,7 +27,7 @@ export default withRouter(React.createClass({
     return (
       <section className="container">
         <TitleBar title="Workout finished"
-                  description="You can check out your total workout time above." />
+                  description="You can check out your total workout time below." />
         <div className="content">
           <LCD allowHours={true} seconds={this.props.data.get("totalWorkoutTime")}/>
         </div>

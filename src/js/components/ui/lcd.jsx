@@ -117,7 +117,6 @@ export default React.createClass({
     hours = this.getHours();
     minutes = this.getMinutes();
     seconds = this.getSeconds();
-
     addHours = parseInt(hours, 10) && this.props.allowHours;
 
     return `${addHours ? (hours + ":") : ""}${minutes}:${seconds}`;
