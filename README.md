@@ -10,6 +10,16 @@ publicly available solutions make up to my expectations. I wanted to
 * effortlessly track the length my isometric holds with a ticking timer,
 * set only the amount of rest beforehand and work as long as I feel like.
 
+### Screenshots
+
+###### Setting rest time, portrait mode
+
+![Portrait](http://i.imgur.com/8e3dadI.png)
+
+###### Workout, landscape mode
+
+![Landscape](http://i.imgur.com/YLOuqXY.png)
+
 ### Live demo?
 
 I do not plan to release it, testing different browsers and devices would take longer than actually writing the app.
