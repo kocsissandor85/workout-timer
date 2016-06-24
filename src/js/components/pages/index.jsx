@@ -52,7 +52,8 @@ export default withRouter(React.createClass({
   },
 
   onStartWorkout: function () {
-    this.props.router.push("/workout");
+    Actions.workout.start();
+    this.props.router.replace("/workout");
   },
 
   render: function () {

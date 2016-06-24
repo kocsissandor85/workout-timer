@@ -38,17 +38,19 @@ bundler = watchify(browserify(options));
 // Add transformations here.
 bundler.transform(babelify);
 
-gulp.task("watch", ["fonts", "css", "html", "sfx"], function() {
+gulp.task("watch", ["fonts", "css", "html", "sfx", "images"], function() {
   bundle();
 
   gulp.watch("./src/styles/**/*.scss", ["css"]);
+  gulp.watch("./src/images/**/*.*", ["images"]);
   gulp.watch("./src/fonts/**/*.*", ["fonts"]);
   gulp.watch("./src/sfx/**/*.*", ["sfx"]);
-  gulp.watch("./src/html/**/*.html", ["html"]);
+  gulp.watch("./src/html/**/*.*", ["html"]);
 });
 
 gulp.task("css", css);
 gulp.task("html", html);
+gulp.task("images", images);
 gulp.task("fonts", fonts);
 gulp.task("sfx", sfx);
 gulp.task("runserver", runserver);
@@ -67,7 +69,7 @@ function runserver () {
 }
 
 function html () {
-  return gulp.src("./src/html/**/*.html")
+  return gulp.src("./src/html/**/*.*")
     .on("log", gutil.log)
     .pipe(gulp.dest("./dist"));
 }
@@ -82,6 +84,12 @@ function sfx () {
   return gulp.src("./src/sfx/**/*.*")
     .on("log", gutil.log)
     .pipe(gulp.dest("./dist/sfx"));
+}
+
+function images () {
+  return gulp.src("./src/images/**/*.*")
+    .on("log", gutil.log)
+    .pipe(gulp.dest("./dist/images"));
 }
 
 function css () {

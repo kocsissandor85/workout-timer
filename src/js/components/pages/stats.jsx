@@ -20,7 +20,7 @@ export default withRouter(React.createClass({
   },
 
   onRestartWorkout: function () {
-    this.props.router.push("/");
+    this.props.router.replace("/");
   },
 
   render: function () {

@@ -54,7 +54,7 @@ export default withRouter(React.createClass({
         desc = "Hit continue when you are back.";
         break;
       case WORKOUT_STATES.rest:
-        desc = "Tap on the timer to jump to next set.";
+        desc = "Tap on the timer to jump to the next set.";
         break;
     }
 
@@ -69,7 +69,7 @@ export default withRouter(React.createClass({
   onFinishWorkout: function () {
     this.timer.clear();
     Actions.workout.finish();
-    this.props.router.push("/stats");
+    this.props.router.replace("/stats");
   },
 
   onContinueWorkout: function () {

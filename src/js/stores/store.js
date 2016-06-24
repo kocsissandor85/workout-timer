@@ -1,6 +1,11 @@
 import Reflux from "reflux";
+import _ from "lodash";
 import immstruct from "immstruct";
 import Actions from "../actions";
+import SFX from "../audio";
+
+const DEFAULT_RESTING_TIME = 90;
+const DEFAULT_REMAINING_TIME = 10;
 
 export const WORKOUT_STATES = {
   start: "Let's start",
@@ -9,35 +14,27 @@ export const WORKOUT_STATES = {
   paused: "Be right back"
 };
 
-const DEFAULT_RESTING_TIME = 90;
-const DEFAULT_REMAINING_TIME = 10;
-
-const KEYS = {
+const TIMER_KEYS = {
   remaining: "remainingTime",
   elapsed: "elapsedTime"
 };
 
-const wooden = new Audio("../sfx/wooden.wav");
-const double = new Audio("../sfx/double.wav");
-const beep = new Audio("../sfx/beep.wav");
-
 export default Reflux.createStore({
 
   data: immstruct({
-    restingTime: DEFAULT_RESTING_TIME,
-    workoutState: WORKOUT_STATES.start,
-
+    activeKey: TIMER_KEYS.remaining,
     elapsedTime: 0,
-    remainingTime: DEFAULT_REMAINING_TIME,
-    activeKey: KEYS.remaining,
     increment: -1,
-
-    totalWorkoutTime: 0
+    remainingTime: DEFAULT_REMAINING_TIME,
+    restingTime: DEFAULT_RESTING_TIME,
+    totalWorkoutTime: 0,
+    workoutState: WORKOUT_STATES.start
   }),
 
   stateBeforePaused: null,
 
   init: function () {
+    this.listenTo(Actions.workout.start, this.handleAction.bind(this, "start"));
     this.listenTo(Actions.workout.rest, this.handleAction.bind(this, "rest"));
     this.listenTo(Actions.workout.restEnd, this.handleAction.bind(this, "restEnd"));
     this.listenTo(Actions.workout.pause, this.handleAction.bind(this, "pause"));
@@ -46,27 +43,40 @@ export default Reflux.createStore({
 
     this.listenTo(Actions.timer.adjust, this.adjustTimer);
     this.listenTo(Actions.timer.update, this.updateTimer);
+
+    document.addEventListener("deviceready", this.onDeviceReady, false);
+  },
+
+  onDeviceReady: function () {
+    
   },
 
   handleAction: function (action) {
     var converted = this.data.cursor().deref().toJS();
 
     switch (action) {
+      case "start":
+        this.data.cursor().update(d => d.withMutations(d => {
+          d.set("totalWorkoutTime", 0);
+          d.set("workoutState", WORKOUT_STATES.start);
+        }));
+
+        break;
       case "rest":
         this.data.cursor().update(d => d.withMutations(d => {
-          d.set("activeKey", KEYS.remaining);
-          d.set("workoutState", WORKOUT_STATES.rest);
+          d.set("activeKey", TIMER_KEYS.remaining);
           d.set("increment", converted.increment * -1);
+          d.set("workoutState", WORKOUT_STATES.rest);
         }));
 
         break;
       case "restEnd":
         this.data.cursor().update(d => d.withMutations(d => {
-          d.set("activeKey", KEYS.elapsed);
-          d.set("workoutState", WORKOUT_STATES.work);
+          d.set("activeKey", TIMER_KEYS.elapsed);
+          d.set("elapsedTime", 0);
           d.set("increment", converted.increment * -1);
           d.set("remainingTime", converted.restingTime);
-          d.set("elapsedTime", 0);
+          d.set("workoutState", WORKOUT_STATES.work);
         }));
 
         break;
@@ -81,6 +91,14 @@ export default Reflux.createStore({
 
         break;
       case "finish":
+        this.data.cursor().update(d => d.withMutations(d => {
+          d.set("activeKey", TIMER_KEYS.remaining);
+          d.set("elapsedTime", 0);
+          d.set("increment", -1);
+          d.set("remainingTime", DEFAULT_REMAINING_TIME);
+          d.set("restingTime", DEFAULT_RESTING_TIME);
+        }));
+
         break;
     }
   },
@@ -100,25 +118,24 @@ export default Reflux.createStore({
     this.data.cursor().update(d => d.withMutations(d => {
       let goingDown, current;
 
-      goingDown = converted.activeKey === KEYS.remaining;
+      goingDown = converted.activeKey === TIMER_KEYS.remaining;
       current = converted[converted.activeKey];
 
       // Is the time up?
-      if (goingDown && current <= 5) {
-        beep.play();
-      }
-
       if (goingDown && current === 1) {
-        d.set("activeKey", KEYS.elapsed);
-        d.set("workoutState", WORKOUT_STATES.work);
+        d.set("activeKey", TIMER_KEYS.elapsed);
+        d.set("elapsedTime", 0);
         d.set("increment", converted.increment * -1);
         d.set("remainingTime", converted.restingTime);
-        d.set("elapsedTime", 0);
+        d.set("workoutState", WORKOUT_STATES.work);
       } else {
         d.set(converted.activeKey, current + converted.increment);
       }
 
-      wooden.play();
+      SFX.beep.volume = goingDown && current <= 5 ? 1 : 0;
+      SFX.beep.play();
+      SFX.wooden.play();
+
       d.set("totalWorkoutTime", converted.totalWorkoutTime + 1);
     }));
   }

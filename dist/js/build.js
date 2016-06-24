@@ -3,7 +3,7 @@
 
 module.exports = require('./src/js/router.jsx');
 
-},{"./src/js/router.jsx":321}],2:[function(require,module,exports){
+},{"./src/js/router.jsx":322}],2:[function(require,module,exports){
 /**
  * Create an accurate interval that does not skew over time.
  * @param  {function}   func            Function to call ever interval ms
@@ -57523,6 +57523,7 @@ asyncAction = { asyncResult: true };
 
 exports.default = {
   workout: _reflux2.default.createActions({
+    start: syncAction,
     rest: syncAction,
     restEnd: syncAction,
     pause: syncAction,
@@ -57561,22 +57562,6 @@ exports.default = _react2.default.createClass({
 
   displayName: "App",
 
-  onDoubleTap: function onDoubleTap(evt) {
-    this.requestFullscreen(evt.currentTarget);
-  },
-
-  requestFullscreen: function requestFullscreen(element) {
-    if (element.requestFullscreen) {
-      element.requestFullscreen();
-    } else if (element.webkitRequestFullscreen) {
-      element.webkitRequestFullscreen();
-    } else if (element.mozRequestFullScreen) {
-      element.mozRequestFullScreen();
-    } else if (element.msRequestFullscreen) {
-      element.msRequestFullscreen();
-    }
-  },
-
   render: function render() {
     return _react2.default.createElement(
       _reactHammerjs2.default,
@@ -57595,7 +57580,34 @@ exports.default = _react2.default.createClass({
 
 });
 
-},{"./stores/store":322,"react":274,"react-hammerjs":48}],314:[function(require,module,exports){
+},{"./stores/store":323,"react":274,"react-hammerjs":48}],314:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var beep, beepSource, wooden, woodenSource;
+
+beepSource = document.createElement("source");
+beepSource.type = "audio/mpeg";
+beepSource.src = "../sfx/beep.wav";
+
+beep = new Audio();
+beep.appendChild(beepSource);
+
+woodenSource = document.createElement("source");
+woodenSource.type = "audio/mpeg";
+woodenSource.src = "../sfx/wooden.wav";
+
+wooden = new Audio();
+wooden.appendChild(woodenSource);
+
+exports.default = {
+  wooden: wooden,
+  beep: beep
+};
+
+},{}],315:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -57679,7 +57691,8 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
   },
 
   onStartWorkout: function onStartWorkout() {
-    this.props.router.push("/workout");
+    _actions2.default.workout.start();
+    this.props.router.replace("/workout");
   },
 
   render: function render() {
@@ -57706,7 +57719,7 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
 
 }));
 
-},{"../../actions":312,"../../mixins/top-down-rendering":320,"../ui/button":317,"../ui/lcd":318,"../ui/title":319,"lodash":11,"react":274,"react-hammerjs":48,"react-router":78}],315:[function(require,module,exports){
+},{"../../actions":312,"../../mixins/top-down-rendering":321,"../ui/button":318,"../ui/lcd":319,"../ui/title":320,"lodash":11,"react":274,"react-hammerjs":48,"react-router":78}],316:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -57759,7 +57772,7 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
   },
 
   onRestartWorkout: function onRestartWorkout() {
-    this.props.router.push("/");
+    this.props.router.replace("/");
   },
 
   render: function render() {
@@ -57783,7 +57796,7 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
 
 }));
 
-},{"../../actions":312,"../../mixins/top-down-rendering":320,"../../stores/store":322,"../ui/button":317,"../ui/lcd":318,"../ui/title":319,"accurate-interval":2,"react":274,"react-hammerjs":48,"react-router":78}],316:[function(require,module,exports){
+},{"../../actions":312,"../../mixins/top-down-rendering":321,"../../stores/store":323,"../ui/button":318,"../ui/lcd":319,"../ui/title":320,"accurate-interval":2,"react":274,"react-hammerjs":48,"react-router":78}],317:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -57870,7 +57883,7 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
         desc = "Hit continue when you are back.";
         break;
       case _store.WORKOUT_STATES.rest:
-        desc = "Tap on the timer to jump to next set.";
+        desc = "Tap on the timer to jump to the next set.";
         break;
     }
 
@@ -57885,7 +57898,7 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
   onFinishWorkout: function onFinishWorkout() {
     this.timer.clear();
     _actions2.default.workout.finish();
-    this.props.router.push("/stats");
+    this.props.router.replace("/stats");
   },
 
   onContinueWorkout: function onContinueWorkout() {
@@ -57937,7 +57950,7 @@ exports.default = (0, _reactRouter.withRouter)(_react2.default.createClass({
 
 }));
 
-},{"../../actions":312,"../../mixins/top-down-rendering":320,"../../stores/store":322,"../ui/button":317,"../ui/lcd":318,"../ui/title":319,"accurate-interval":2,"react":274,"react-hammerjs":48,"react-router":78}],317:[function(require,module,exports){
+},{"../../actions":312,"../../mixins/top-down-rendering":321,"../../stores/store":323,"../ui/button":318,"../ui/lcd":319,"../ui/title":320,"accurate-interval":2,"react":274,"react-hammerjs":48,"react-router":78}],318:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -58023,7 +58036,7 @@ var ActionButton = exports.ActionButton = _react2.default.createClass({
   }
 });
 
-},{"react":274,"react-dom":46,"react-hammerjs":48}],318:[function(require,module,exports){
+},{"react":274,"react-dom":46,"react-hammerjs":48}],319:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -58182,7 +58195,7 @@ exports.default = _react2.default.createClass({
 
 });
 
-},{"lodash":11,"react":274,"react-dom":46}],319:[function(require,module,exports){
+},{"lodash":11,"react":274,"react-dom":46}],320:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -58223,7 +58236,7 @@ exports.default = _react2.default.createClass({
 
 });
 
-},{"react":274}],320:[function(require,module,exports){
+},{"react":274}],321:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -58247,7 +58260,7 @@ exports.default = {
 
 };
 
-},{"omniscient/component":13}],321:[function(require,module,exports){
+},{"omniscient/component":13}],322:[function(require,module,exports){
 "use strict";
 
 var _react = require("react");
@@ -58313,7 +58326,7 @@ _store2.default.data.on("next-animation-frame", render);
   return initialRender();
 });
 
-},{"./app":313,"./components/pages/index":314,"./components/pages/stats":315,"./components/pages/workout":316,"./stores/store":322,"domready":4,"react":274,"react-dom":46,"react-router":78,"when":311}],322:[function(require,module,exports){
+},{"./app":313,"./components/pages/index":315,"./components/pages/stats":316,"./components/pages/workout":317,"./stores/store":323,"domready":4,"react":274,"react-dom":46,"react-router":78,"when":311}],323:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -58325,6 +58338,10 @@ var _reflux = require("reflux");
 
 var _reflux2 = _interopRequireDefault(_reflux);
 
+var _lodash = require("lodash");
+
+var _lodash2 = _interopRequireDefault(_lodash);
+
 var _immstruct = require("immstruct");
 
 var _immstruct2 = _interopRequireDefault(_immstruct);
@@ -58333,7 +58350,14 @@ var _actions = require("../actions");
 
 var _actions2 = _interopRequireDefault(_actions);
 
+var _audio = require("../audio");
+
+var _audio2 = _interopRequireDefault(_audio);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var DEFAULT_RESTING_TIME = 90;
+var DEFAULT_REMAINING_TIME = 10;
 
 var WORKOUT_STATES = exports.WORKOUT_STATES = {
   start: "Let's start",
@@ -58342,35 +58366,27 @@ var WORKOUT_STATES = exports.WORKOUT_STATES = {
   paused: "Be right back"
 };
 
-var DEFAULT_RESTING_TIME = 90;
-var DEFAULT_REMAINING_TIME = 10;
-
-var KEYS = {
+var TIMER_KEYS = {
   remaining: "remainingTime",
   elapsed: "elapsedTime"
 };
 
-var wooden = new Audio("../sfx/wooden.wav");
-var double = new Audio("../sfx/double.wav");
-var beep = new Audio("../sfx/beep.wav");
-
 exports.default = _reflux2.default.createStore({
 
   data: (0, _immstruct2.default)({
-    restingTime: DEFAULT_RESTING_TIME,
-    workoutState: WORKOUT_STATES.start,
-
+    activeKey: TIMER_KEYS.remaining,
     elapsedTime: 0,
-    remainingTime: DEFAULT_REMAINING_TIME,
-    activeKey: KEYS.remaining,
     increment: -1,
-
-    totalWorkoutTime: 0
+    remainingTime: DEFAULT_REMAINING_TIME,
+    restingTime: DEFAULT_RESTING_TIME,
+    totalWorkoutTime: 0,
+    workoutState: WORKOUT_STATES.start
   }),
 
   stateBeforePaused: null,
 
   init: function init() {
+    this.listenTo(_actions2.default.workout.start, this.handleAction.bind(this, "start"));
     this.listenTo(_actions2.default.workout.rest, this.handleAction.bind(this, "rest"));
     this.listenTo(_actions2.default.workout.restEnd, this.handleAction.bind(this, "restEnd"));
     this.listenTo(_actions2.default.workout.pause, this.handleAction.bind(this, "pause"));
@@ -58379,7 +58395,11 @@ exports.default = _reflux2.default.createStore({
 
     this.listenTo(_actions2.default.timer.adjust, this.adjustTimer);
     this.listenTo(_actions2.default.timer.update, this.updateTimer);
+
+    document.addEventListener("deviceready", this.onDeviceReady, false);
   },
+
+  onDeviceReady: function onDeviceReady() {},
 
   handleAction: function handleAction(action) {
     var _this = this;
@@ -58387,12 +58407,21 @@ exports.default = _reflux2.default.createStore({
     var converted = this.data.cursor().deref().toJS();
 
     switch (action) {
+      case "start":
+        this.data.cursor().update(function (d) {
+          return d.withMutations(function (d) {
+            d.set("totalWorkoutTime", 0);
+            d.set("workoutState", WORKOUT_STATES.start);
+          });
+        });
+
+        break;
       case "rest":
         this.data.cursor().update(function (d) {
           return d.withMutations(function (d) {
-            d.set("activeKey", KEYS.remaining);
-            d.set("workoutState", WORKOUT_STATES.rest);
+            d.set("activeKey", TIMER_KEYS.remaining);
             d.set("increment", converted.increment * -1);
+            d.set("workoutState", WORKOUT_STATES.rest);
           });
         });
 
@@ -58400,11 +58429,11 @@ exports.default = _reflux2.default.createStore({
       case "restEnd":
         this.data.cursor().update(function (d) {
           return d.withMutations(function (d) {
-            d.set("activeKey", KEYS.elapsed);
-            d.set("workoutState", WORKOUT_STATES.work);
+            d.set("activeKey", TIMER_KEYS.elapsed);
+            d.set("elapsedTime", 0);
             d.set("increment", converted.increment * -1);
             d.set("remainingTime", converted.restingTime);
-            d.set("elapsedTime", 0);
+            d.set("workoutState", WORKOUT_STATES.work);
           });
         });
 
@@ -58424,6 +58453,16 @@ exports.default = _reflux2.default.createStore({
 
         break;
       case "finish":
+        this.data.cursor().update(function (d) {
+          return d.withMutations(function (d) {
+            d.set("activeKey", TIMER_KEYS.remaining);
+            d.set("elapsedTime", 0);
+            d.set("increment", -1);
+            d.set("remainingTime", DEFAULT_REMAINING_TIME);
+            d.set("restingTime", DEFAULT_RESTING_TIME);
+          });
+        });
+
         break;
     }
   },
@@ -58447,25 +58486,24 @@ exports.default = _reflux2.default.createStore({
         var goingDown = void 0,
             current = void 0;
 
-        goingDown = converted.activeKey === KEYS.remaining;
+        goingDown = converted.activeKey === TIMER_KEYS.remaining;
         current = converted[converted.activeKey];
 
         // Is the time up?
-        if (goingDown && current <= 5) {
-          beep.play();
-        }
-
         if (goingDown && current === 1) {
-          d.set("activeKey", KEYS.elapsed);
-          d.set("workoutState", WORKOUT_STATES.work);
+          d.set("activeKey", TIMER_KEYS.elapsed);
+          d.set("elapsedTime", 0);
           d.set("increment", converted.increment * -1);
           d.set("remainingTime", converted.restingTime);
-          d.set("elapsedTime", 0);
+          d.set("workoutState", WORKOUT_STATES.work);
         } else {
           d.set(converted.activeKey, current + converted.increment);
         }
 
-        wooden.play();
+        _audio2.default.beep.volume = goingDown && current <= 5 ? 1 : 0;
+        _audio2.default.beep.play();
+        _audio2.default.wooden.play();
+
         d.set("totalWorkoutTime", converted.totalWorkoutTime + 1);
       });
     });
@@ -58473,7 +58511,7 @@ exports.default = _reflux2.default.createStore({
 
 });
 
-},{"../actions":312,"immstruct":5,"reflux":291}]},{},[1])
+},{"../actions":312,"../audio":314,"immstruct":5,"lodash":11,"reflux":291}]},{},[1])
 
 
 //# sourceMappingURL=build.js.map
